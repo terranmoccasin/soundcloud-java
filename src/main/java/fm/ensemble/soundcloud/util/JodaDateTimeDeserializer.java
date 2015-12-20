@@ -6,10 +6,11 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 
 import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 
-public class JodaDateTimeDeserializer {
+public class JodaDateTimeDeserializer implements JsonDeserializer<DateTime> {
   public DateTime deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
       throws JsonParseException {
     return DateTime.parse(json.getAsJsonPrimitive().getAsString(),

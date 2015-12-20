@@ -1,8 +1,9 @@
 package fm.ensemble.soundcloud;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.net.URI;
-import java.util.Date;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.http.HttpResponse;
@@ -72,6 +73,12 @@ public class SoundCloud {
         token.access, token.refresh, new DateTime(token.expiresIn));
   }
 
+  public fm.ensemble.soundcloud.Token refreshTokens() throws IOException {
+    Token token = apiWrapper.refreshToken();
+    return fm.ensemble.soundcloud.Token.create(
+        token.access, token.refresh, new DateTime(token.expiresIn));
+  }
+
   public Me me() {
     return new Me();
   }
@@ -83,15 +90,24 @@ public class SoundCloud {
       return convert(User.class, apiWrapper.get(Request.to(ME_PATH)));
     }
 
+    public Playlists playlists() {
+      return new Playlists();
+    }
+
     public class Playlists {
       private static final String ME_PLAYLISTS_PATH = ME_PATH + "/playlists";
-      public List<Playlist> get() {
-        return null;
+      public List<Playlist> get() throws IOException {
+        return convertList(Playlist.class, apiWrapper.get(Request.to(ME_PLAYLISTS_PATH)));
       }
     }
   }
 
   private static <T> T convert(Class<T> classType, HttpResponse resp) throws IOException {
     return gson.fromJson(Http.getString(resp), classType);
+  }
+
+  @SuppressWarnings("unchecked")
+  private static <T> List<T> convertList(Class<T> classType, HttpResponse resp) throws IOException {
+    return Arrays.asList((T[]) convert(Array.newInstance(classType, 0).getClass(), resp));
   }
 }

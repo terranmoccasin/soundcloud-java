@@ -1,7 +1,5 @@
 package fm.ensemble.soundcloud.resource;
 
-import java.util.List;
-
 import org.joda.time.DateTime;
 
 public class Track {
@@ -21,10 +19,10 @@ public class Track {
   private User label;
   private Long duration;
   private String genre;
-  private List<String> tagList;
+  private String tagList;
   private int labelId;
   private String labelName;
-  private int release;
+  private String release;
   private int releaseDay;
   private int releaseMonth;
   private int releaseYear;
@@ -46,7 +44,7 @@ public class Track {
   private int playbackCount;
   private int favoritingsCount;
   private String originalFormat;
-  private int original_content_size;
+  private int originalContentSize;
   public int getId() {
     return id;
   }
@@ -143,10 +141,10 @@ public class Track {
   public void setGenre(String genre) {
     this.genre = genre;
   }
-  public List<String> getTagList() {
+  public String getTagList() {
     return tagList;
   }
-  public void setTagList(List<String> tagList) {
+  public void setTagList(String tagList) {
     this.tagList = tagList;
   }
   public int getLabelId() {
@@ -161,10 +159,10 @@ public class Track {
   public void setLabelName(String labelName) {
     this.labelName = labelName;
   }
-  public int getRelease() {
+  public String getRelease() {
     return release;
   }
-  public void setRelease(int release) {
+  public void setRelease(String release) {
     this.release = release;
   }
   public int getReleaseDay() {
@@ -293,10 +291,10 @@ public class Track {
   public void setOriginalFormat(String originalFormat) {
     this.originalFormat = originalFormat;
   }
-  public int getOriginal_content_size() {
-    return original_content_size;
+  public int getOriginalContentSize() {
+    return originalContentSize;
   }
-  public void setOriginal_content_size(int original_content_size) {
-    this.original_content_size = original_content_size;
+  public void setOriginalContentSize(int originalContentSize) {
+    this.originalContentSize = originalContentSize;
   }
 }

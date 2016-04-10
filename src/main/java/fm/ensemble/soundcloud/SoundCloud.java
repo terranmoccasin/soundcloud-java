@@ -1,14 +1,5 @@
 package fm.ensemble.soundcloud;
 
-import java.io.IOException;
-import java.lang.reflect.Array;
-import java.net.URI;
-import java.util.Arrays;
-import java.util.List;
-
-import org.apache.http.HttpResponse;
-import org.joda.time.DateTime;
-
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -16,14 +7,24 @@ import com.soundcloud.api.ApiWrapper;
 import com.soundcloud.api.Http;
 import com.soundcloud.api.Request;
 import com.soundcloud.api.Token;
-
 import fm.ensemble.soundcloud.resource.Playlist;
 import fm.ensemble.soundcloud.resource.User;
 import fm.ensemble.soundcloud.util.JodaDateTimeDeserializer;
+import org.apache.http.HttpResponse;
+import org.joda.time.DateTime;
+
+import java.io.IOException;
+import java.lang.reflect.Array;
+import java.net.URI;
+import java.util.Arrays;
+import java.util.List;
 
 public class SoundCloud {
 
+  public static final String SCOPE_NON_EXPIRING = "non-expiring";
+
   private final ApiWrapper apiWrapper;
+  private String scope = "*";
   private static final Gson gson = new GsonBuilder()
       .registerTypeAdapter(DateTime.class, new JodaDateTimeDeserializer())
       .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
@@ -37,7 +38,9 @@ public class SoundCloud {
     private String clientId;
     private String clientSecret;
     private URI redirectUri;
-    private Token token;
+    private String scope = "*";
+    private String accessToken;
+    private String refreshToken;
 
     private Builder(String clientId, String clientSecret) {
       this.clientId = clientId;
@@ -49,13 +52,27 @@ public class SoundCloud {
       return this;
     }
 
-    public Builder setToken(String accessToken, String refreshToken) {
-      this.token = new Token(accessToken, refreshToken);
+    public Builder setAccessToken(String accessToken) {
+      this.accessToken = accessToken;
+      return this;
+    }
+
+    public Builder setRefreshToken(String refreshToken) {
+      this.refreshToken = refreshToken;
+      return this;
+    }
+
+    public Builder setScope(String scope) {
+      this.scope = scope;
       return this;
     }
 
     public SoundCloud build() {
-      return new SoundCloud(new ApiWrapper(clientId, clientSecret, redirectUri, token));
+      Token token = new Token(accessToken, refreshToken, scope);
+      ApiWrapper api = new ApiWrapper(clientId, clientSecret, redirectUri, token);
+      SoundCloud sc = new SoundCloud(api);
+      sc.scope = this.scope;
+      return sc;
     }
   }
 
@@ -64,7 +81,7 @@ public class SoundCloud {
   }
 
   public String getAuthorizationUrl(String state) {
-    return apiWrapper.authorizationCodeUrl("/connect", null, null, state).toString();
+    return apiWrapper.authorizationCodeUrl("/connect", scope, null, state).toString();
   }
 
   public fm.ensemble.soundcloud.Token exchangeAuthorizationCode(String code) throws IOException {

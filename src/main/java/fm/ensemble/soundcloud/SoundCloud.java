@@ -8,6 +8,7 @@ import com.soundcloud.api.Http;
 import com.soundcloud.api.Request;
 import com.soundcloud.api.Token;
 import fm.ensemble.soundcloud.resource.Playlist;
+import fm.ensemble.soundcloud.resource.Track;
 import fm.ensemble.soundcloud.resource.User;
 import fm.ensemble.soundcloud.util.JodaDateTimeDeserializer;
 import org.apache.http.HttpResponse;
@@ -115,6 +116,28 @@ public class SoundCloud {
       private static final String ME_PLAYLISTS_PATH = ME_PATH + "/playlists";
       public List<Playlist> get() throws IOException {
         return convertList(Playlist.class, apiWrapper.get(Request.to(ME_PLAYLISTS_PATH)));
+      }
+    }
+
+    public Tracks tracks() {
+      return new Tracks();
+    }
+
+    public class Tracks {
+      private static final String ME_TRACKS_PATH = ME_PATH + "/tracks";
+      public List<Track> get() throws IOException {
+        return convertList(Track.class, apiWrapper.get(Request.to(ME_TRACKS_PATH)));
+      }
+    }
+
+    public Favorites favorites() {
+      return new Favorites();
+    }
+
+    public class Favorites {
+      private static final String ME_FAVORITES_PATH = ME_PATH + "/favorites";
+      public List<Track> get() throws IOException {
+        return convertList(Track.class, apiWrapper.get(Request.to(ME_FAVORITES_PATH)));
       }
     }
   }

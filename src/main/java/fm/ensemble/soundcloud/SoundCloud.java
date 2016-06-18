@@ -76,7 +76,7 @@ public class SoundCloud {
 
     public SoundCloud build() {
       Token token = null;
-      if (accessToken != null && refreshToken != null) {
+      if (accessToken != null) {
         token = new Token(accessToken, refreshToken, scope);
       }
       ApiWrapper api = new ApiWrapper(clientId, clientSecret, redirectUri, token);

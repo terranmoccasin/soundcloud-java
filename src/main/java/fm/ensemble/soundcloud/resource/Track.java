@@ -36,7 +36,7 @@ public class Track {
   private String streamUrl;
   private String videoUrl;
   private Double bpm;
-  private boolean cmomentable;
+  private boolean commentable;
   private String isrc;
   private String keySignature;
   private int commentCount;
@@ -244,10 +244,10 @@ public class Track {
     this.bpm = bpm;
   }
   public boolean isCmomentable() {
-    return cmomentable;
+    return commentable;
   }
   public void setCmomentable(boolean cmomentable) {
-    this.cmomentable = cmomentable;
+    this.commentable = cmomentable;
   }
   public String getIsrc() {
     return isrc;

@@ -24,7 +24,7 @@ public class SoundCloud {
   public static final String SCOPE_NON_EXPIRING = "non-expiring";
 
   private final ApiWrapper apiWrapper;
-  private String scope = "*";
+  private String scope = "";
   private static final Gson gson = new GsonBuilder()
       .registerTypeAdapter(DateTime.class, new JodaDateTimeDeserializer())
       .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
